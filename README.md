@@ -43,7 +43,7 @@ This project is in Phase 1 and focuses on generating and handling text-based que
 
 ## 🧑‍🤝‍🧑 Team
 Sumit, Stalin, Steve, Deon
-Mentor: Mr. Amroz S.
+Mentor: Mr. Amroz Siddiqui
 We are all affiliated with Fr. C. Rodrigues Institute of Technology, University of Mumbai.
 
 ## 📫 Contributing
