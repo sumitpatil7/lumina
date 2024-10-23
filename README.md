@@ -43,7 +43,7 @@ These screenshot shows the results screen where LUMINA presents the evaluation m
 ## 🗒️ Setup Instructions
 
 1.Clone the repository:
-git clone <[text](https://github.com/sumitpatil7/lumina.git)>
+git clone [repository](https://github.com/sumitpatil7/lumina.git)
 
 2.Install dependencies:
 pip install -r requirements.txt
@@ -65,6 +65,7 @@ This project is in Phase 1 and focuses on generating and handling text-based que
 ## 🧑‍🤝‍🧑 Team
 Sumit, Stalin, Steve, Deon    
 Mentor: Mr. Amroz S.      
+
 We are all affiliated with Fr. C. Rodrigues Institute of Technology, University of Mumbai.
 
 ## 📫 Contributing
