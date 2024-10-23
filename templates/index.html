@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Options</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Change to flex-start to prevent clipping */
+        min-height: 100vh; /* Ensure the body takes full height */
+        padding: 20px; /* Add some padding */
+    }
+    .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0; /* Remove margin for consistent centering */
+        display: flex;
+        flex-direction: column; /* Ensure vertical alignment */
+        align-items: center; /* Center content horizontally */
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+    form {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+    fieldset {
+        margin-bottom: 20px;
+        border: 2px solid #e0e0e0;
+        padding: 20px;
+        border-radius: 8px;
+    }
+    legend {
+        font-weight: 600;
+        color: #666;
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #444;
+    }
+    input[type="radio"], input[type="checkbox"] {
+        margin-right: 10px;
+    }
+    input[type="number"], textarea {
+        width: calc(100% - 22px);
+        padding: 10px;
+        font-size: 14px;
+        margin-top: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+    }
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    }
+    /* Responsive Styles */
+    @media (max-width: 600px) {
+        form {
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.5rem;
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h1>Select Your Interview Options</h1>
+
+    <form id="interview-options">
+        <fieldset>
+            <legend>1. Interview Duration</legend>
+            <label>
+                <input type="radio" name="duration" value="15"> 15 minutes
+            </label>
+            <label>
+                <input type="radio" name="duration" value="30"> 30 minutes
+            </label>
+            <label>
+                <input type="radio" name="duration" value="60"> 60 minutes
+            </label>
+            <label>
+                <input type="radio" name="duration" value="custom"> Custom Duration (in minutes):
+                <input type="number" name="customDuration" min="1" placeholder="e.g., 45">
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>2. Approximate Number of Questions (Optional)</legend>
+            <label for="numQuestions">Enter a number (leave blank for default):</label>
+            <input type="number" id="numQuestions" name="numQuestions" min="1" placeholder="e.g., 5">
+        </fieldset>
+
+        <fieldset>
+            <legend>3. Difficulty Level</legend>
+            <label>
+                <input type="radio" name="difficulty" value="beginner"> Beginner
+            </label>
+            <label>
+                <input type="radio" name="difficulty" value="intermediate"> Intermediate
+            </label>
+            <label>
+                <input type="radio" name="difficulty" value="advanced"> Advanced
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>4. Question Type</legend>
+            <label>
+                <input type="checkbox" name="questionType" value="technical"> Technical
+            </label>
+            <label>
+                <input type="checkbox" name="questionType" value="behavioral"> Behavioral
+            </label>
+            <label>
+                <input type="checkbox" name="questionType" value="situational"> Situational
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>5. Project-Specific Questions</legend>
+            <label>
+                <input type="checkbox" name="projectQuestions" value="projectRelated"> Ask project-related questions
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>6. Text-Based Questions</legend>
+            <label for="inputText">Input Text (Optional):</label>
+            <textarea id="inputText" name="inputText" rows="4" placeholder="Provide a piece of text for question generation..."></textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>7. Response Type</legend>
+            <label>
+                <input type="radio" name="responseType" value="text"> Text-based answers
+            </label>
+            <label>
+                <input type="radio" name="responseType" value="audio"> Audio-based answers
+            </label>
+        </fieldset>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<script>
+document.getElementById('interview-options').addEventListener('submit', function (event) {
+    event.preventDefault();  // Prevent the form from refreshing the page
+
+    // Create a JSON object to store form data
+    const formData = {};
+
+    // Gather form data
+    const duration = document.querySelector('input[name="duration"]:checked');
+    formData.duration = duration ? duration.value : null;
+
+    const numQuestions = document.getElementById('numQuestions').value;
+    formData.numQuestions = numQuestions ? numQuestions : "default";
+
+    const difficulty = document.querySelector('input[name="difficulty"]:checked');
+    formData.difficulty = difficulty ? difficulty.value : null;
+
+    const questionTypes = Array.from(document.querySelectorAll('input[name="questionType"]:checked')).map(el => el.value);
+    formData.questionTypes = questionTypes;
+
+    const projectQuestions = document.querySelector('input[name="projectQuestions"]:checked');
+    formData.projectQuestions = projectQuestions ? projectQuestions.value : null;
+
+    const inputText = document.getElementById('inputText').value;
+    formData.inputText = inputText;
+
+    const responseType = document.querySelector('input[name="responseType"]:checked');
+    formData.responseType = responseType ? responseType.value : null;
+
+    // Send form data to the server via fetch API
+    fetch('/save_options', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)  // Send the formData as a JSON string
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok.");
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Now, redirect to the loading page
+            window.location.href = '/loading';
+        } else {
+            console.error("Error:", data.error);
+        }
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+});
+</script>
+
+</body>
+</html>

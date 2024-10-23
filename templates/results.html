@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Results Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .chart-box {
+            width: 45%;
+            margin: 20px 0;
+        }
+
+        canvas {
+            margin: 20px auto;
+        }
+
+        /* Styling for table */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Button to download results */
+        .download-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+
+        @media(max-width: 768px) {
+            .chart-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Candidate Performance Overview</h1>
+
+        <div class="chart-container">
+            <!-- Radar Chart (Chart.js) -->
+            <div class="chart-box">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <!-- Radial Bar Chart (ApexCharts) -->
+            <div class="chart-box" id="radialBarChart"></div>
+        </div>
+
+        <!-- Table for better interpretation of results -->
+        <h2>Detailed Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Score (%)</th>
+                </tr>
+            </thead>
+            <tbody id="results-table">
+                <!-- Data will be dynamically inserted here -->
+            </tbody>
+        </table>
+
+        <!-- Button to download results -->
+        <a href="/download-results" class="download-btn">Download Results</a>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+    // Load data from results.json
+    fetch('/result')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data received:", data);  // Log the data to check if it's correctly loaded
+
+            // Radar Chart (Chart.js)
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Technical Proficiency',
+                        'Problem-Solving Ability',
+                        'Cultural Fit',
+                        'Communication Skills',
+                        'Collaboration and Teamwork',
+                        'Adaptability',
+                        'Initiative and Proactiveness',
+                        'Emotional Intelligence'
+                    ],
+                    datasets: [{
+                        label: 'Candidate Score',
+                        data: [
+                            data["Technical Proficiency"],
+                            data["Problem-Solving Ability"],
+                            data["Cultural Fit"],
+                            data["Communication Skills"],
+                            data["Collaboration and Teamwork"],
+                            data["Adaptability"],
+                            data["Initiative and Proactiveness"],
+                            data["Emotional Intelligence"]
+                        ],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scale: {
+                        ticks: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Radial Bar Chart (ApexCharts)
+            const radialOptions = {
+                series: [
+                    data["Technical Proficiency"],
+                    data["Problem-Solving Ability"],
+                    data["Cultural Fit"],
+                    data["Communication Skills"],
+                    data["Collaboration and Teamwork"],
+                    data["Adaptability"],
+                    data["Initiative and Proactiveness"],
+                    data["Emotional Intelligence"]
+                ],
+                chart: {
+                    height: 350,
+                    type: 'radialBar',
+                },
+                plotOptions: {
+                    radialBar: {
+                        dataLabels: {
+                            name: {
+                                fontSize: '16px',
+                            },
+                            value: {
+                                fontSize: '14px',
+                            },
+                            total: {
+                                show: true,
+                                label: 'Overall Score',
+                                formatter: function(w) {
+                                    const totalScore = w.globals.seriesTotals.reduce((a, b) => a + b, 0) / 8;
+                                    return `${Math.round(totalScore)}%`;
+                                }
+                            }
+                        }
+                    }
+                },
+                labels: [
+                    'Technical Proficiency',
+                    'Problem-Solving Ability',
+                    'Cultural Fit',
+                    'Communication Skills',
+                    'Collaboration and Teamwork',
+                    'Adaptability',
+                    'Initiative and Proactiveness',
+                    'Emotional Intelligence'
+                ],
+                colors: ['#00E396', '#FEB019', '#FF4560', '#775DD0', '#008FFB', '#00C8FF', '#FF6347', '#546E7A'],
+            };
+
+            const radialChart = new ApexCharts(document.querySelector("#radialBarChart"), radialOptions);
+            radialChart.render();
+
+            // Populate the table with data
+            const tableBody = document.getElementById('results-table');
+            const metrics = [
+                'Technical Proficiency',
+                'Problem-Solving Ability',
+                'Cultural Fit',
+                'Communication Skills',
+                'Collaboration and Teamwork',
+                'Adaptability',
+                'Initiative and Proactiveness',
+                'Emotional Intelligence'
+            ];
+
+            metrics.forEach(metric => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${metric}</td>
+                    <td>${data[metric]}%</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error("Error loading the results:", error);
+        });
+
+    </script>
+</body>
+</html>

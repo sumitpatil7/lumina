@@ -1,0 +1,42 @@
+[
+    {
+        "question_id": 1,
+        "question": "How would you handle a situation where you found a bug that was difficult to trace?"
+    },
+    {
+        "question_id": 2,
+        "question": "Can you describe your process for designing and implementing a new feature on a web application?"
+    },
+    {
+        "question_id": 3,
+        "question": "Imagine you're working with a team member who has a different approach to coding. How would you handle this situation?"
+    },
+    {
+        "question_id": 4,
+        "question": "How do you ensure the accessibility of a website you've developed?"
+    },
+    {
+        "question_id": 5,
+        "question": "Can you walk me through a complex web project you've worked on and your role in it?"
+    },
+    {
+        "question_id": 6,
+        "question": "How would you approach optimizing the performance of a slow-loading webpage?"
+    },
+    {
+        "question_id": 7,
+        "question": "Describe a time when you had to learn a new technology or tool for a project. How did you approach this?"
+    },
+    {
+        "question_id": 8,
+        "question": "How do you ensure the security of a web application you're developing?"
+    },
+    {
+        "question_id": 9,
+        "question": "Can you explain how you might implement a responsive design for a website using CSS?"
+    },
+    {
+        "question_id": 10,
+        "question": "Describe your experience with version control systems. How have they helped you in your previous projects?"
+    }
+]

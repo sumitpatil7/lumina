@@ -1,0 +1,13 @@
+{
+    "duration": "30",
+    "numQuestions": "10",
+    "difficulty": "intermediate",
+    "questionTypes": [
+        "technical",
+        "behavioral",
+        "situational"
+    ],
+    "projectQuestions": "projectRelated",
+    "inputText": "Interviewing for junior software developer job, which is intended for Web development(fresher).",
+    "responseType": "text"
+}

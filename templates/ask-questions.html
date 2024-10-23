@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Questions</title>
+    <style>
+            /* General body style */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        /* Outer container */
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        /* Title styling */
+        h1 {
+            font-size: 2.5em;
+            color: #444;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Question container with adjusted margin for spacing */
+        #question-container {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Question text */
+        #question-text {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        /* Input text area for answers */
+        #response-text {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px; /* Adjusted to give space between question box and input */
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.1em;
+            resize: none;
+            box-sizing: border-box; /* Ensures padding is included in width */
+        }
+
+        /* Submit button styling */
+        #submit-response {
+            background-color: blueviolet;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover and active effects */
+        #submit-response:hover {
+            background-color: #4e54c8;
+        }
+        #submit-response:active {
+            background-color: #8f94fb;
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            #response-text {
+                font-size: 1em;
+            }
+
+            #submit-response {
+                font-size: 1em;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h4>Interview Questions</h4>
+        <div id="question-container">
+            <p id="question-text">Loading the first question...</p>
+            <textarea id="response-text" rows="4" cols="50" placeholder="Type your answer here..."></textarea>
+        </div>
+        <button id="submit-response">Submit Answer</button>
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let questions = [];  // This will hold the questions
+
+        // Load questions from the JSON file
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/questions');
+                questions = await response.json();
+                displayQuestion();
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                document.getElementById('question-text').textContent = 'Failed to load questions.';
+            }
+        });
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                document.getElementById('question-text').textContent = questions[currentQuestionIndex].question;
+            } else {
+                // Redirect to 'result_loading.html' when the interview is complete
+                window.location.href = '/result_loading';
+            }
+        }
+
+        // Handle response submission
+        document.getElementById('submit-response').addEventListener('click', async () => {
+            const response = document.getElementById('response-text').value;
+            if (response.trim()) {
+                const responseData = {
+                    question_id: questions[currentQuestionIndex].question_id,
+                    question: questions[currentQuestionIndex].question,
+                    Candidate_response: response
+                };
+
+                // Send response to the Flask server
+                try {
+                    const res = await fetch('/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(responseData)
+                    });
+
+                    if (res.ok) {
+                        // Move to the next question
+                        currentQuestionIndex++;
+                        document.getElementById('response-text').value = '';  // Clear the text area
+                        displayQuestion();
+                    } else {
+                        alert('Failed to submit response. Please try again.');
+                    }
+                } catch (error) {
+                    alert('Error submitting response. Please check your server.');
+                }
+            } else {
+                alert("Please enter a response.");
+            }
+        });
+    </script>
+</body>
+</html>

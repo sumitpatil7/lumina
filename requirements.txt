@@ -1,0 +1,10 @@
+Flask==2.2.2               # For backend web server
+requests==2.28.1           # For making HTTP requests (for Ollama API interactions)
+torch==1.12.1              # For PyTorch (required for LLaMA model)
+transformers==4.21.1       # For working with transformer models
+numpy==1.23.1              # For numerical operations
+pandas==1.4.3              # For data manipulation and analysis
+Flask-Cors==3.0.10         # For enabling CORS in Flask
+gunicorn==20.1.0           # For serving the Flask app in production
+
+# Note: Install and configure the Ollama API separately as needed
